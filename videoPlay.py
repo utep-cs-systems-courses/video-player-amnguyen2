@@ -63,7 +63,7 @@ def displayFrames(queue):
                 break
             count += 1
             
-        cv2.destroyAllWindows()
+        #cv2.destroyAllWindows()
         print('Completed displaying of {count} frames')
 
 def main():
