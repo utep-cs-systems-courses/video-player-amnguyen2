@@ -11,8 +11,8 @@ Q_LIMIT = 10
 class Queue:
     def __init__(self):
         self.items = [] # holds values (frames)
-        self.empty = Semaphore(Q_LIMIT) # how many spaces in q are empty?
-        self.full = Semaphore(0) # how many spaces in q are full?
+        self.empty = threading.Semaphore(Q_LIMIT) # how many spaces in q are empty?
+        self.full = threading.Semaphore(0) # how many spaces in q are full?
 
     def getSize(self):
         return len(self.items)
@@ -30,26 +30,3 @@ class Queue:
         item = self.items.pop() # front of the line is last item
         self.empty.release() # empty counter +1
         return item
-
-    
-# Producer class moves frames into queue
-class Producer:
-    def __init__(self, q, frames):
-        self.q = q # custom q object uses counting semaphores
-        self.frames = frames
-
-    def run(self):
-        for f in self.frames:
-            self.q.enqueue(f)
-            
-            
-# Consumer class retrieves frames from queue
-class Consumer:
-    def __init__(self, q):
-        self.q = q
-
-    def run(self):
-        for f in range(self.q.getSize()):
-            frame = self.q.dequeue()
-            print(frame) 
-        
